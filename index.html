@@ -87,95 +87,106 @@
                                     <option value="week">This Week</option>
                                 </select>
                             </div>
+                            <div class="sm-show">
+                                <div class="relative">
+                                    <input v-model="searchQuery" type="text" placeholder="Search resolutions..." 
+                                           class="px-4 py-2 border-2 border-solid border-blue-500 rounded-full w-64">
+                                </div>
+                            </div>
                         </div>
 
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="sm-hide px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
-                                        <div class="flex items-center">
-                                            Resolution #
-                                            <i data-feather="chevron-down" class="w-4 h-4 ml-1" v-if="sortColumn === 'resolutionNumber' && sortDirection === 'asc'"></i>
-                                            <i data-feather="chevron-up" class="w-4 h-4 ml-1" v-if="sortColumn === 'resolutionNumber' && sortDirection === 'desc'"></i>
-                                        </div>
-                                    </th>
-                                    <th class="sm-hide px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
-                                        <div class="flex items-center">
-                                            Date
-                                            <i data-feather="chevron-down" class="w-4 h-4 ml-1" v-if="sortColumn === 'passageDate' && sortDirection === 'asc'"></i>
-                                            <i data-feather="chevron-up" class="w-4 h-4 ml-1" v-if="sortColumn === 'passageDate' && sortDirection === 'desc'"></i>
-                                        </div>
-                                    </th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        <div class="relative">
-                                            <input v-model="searchQuery" type="text" placeholder="Search resolutions..." 
-                                                   class="px-4 py-2 border-2 border-solid border-blue-500 rounded-full w-64">
-                                        </div>
-                                    </th>
-                                    <th class="sm-hide px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        <div class="relative">
-                                            Summary
-                                        </div>
-                                    </th>
-                                    <th class="sm-hide px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
-                                        <div class="flex items-center">
-                                            Category
-                                            <i data-feather="chevron-down" class="w-4 h-4 ml-1" v-if="sortColumn === 'category' && sortDirection === 'asc'"></i>
-                                            <i data-feather="chevron-up" class="w-4 h-4 ml-1" v-if="sortColumn === 'category' && sortDirection === 'desc'"></i>
-                                        </div>
-                                    </th>
-                                    <th class="sm-hide px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        URL
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <transition-group name="fade" tag="tbody">
-                                    <tr v-for="resolution in paginatedResolutions" :key="resolution.resolutionNumber" class="hover:bg-gray-50 clickable"  @click="openModal(resolution)">
-                                        <td class="sm-hide px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">
-                                            {{ resolution.resolutionNumber }}
-                                        </td>
-                                        <td class="sm-hide px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ formatDate(resolution.passageDate) }}
-                                        </td>
-                                        <td class="px-6 py-4 text-sm text-gray-500 max-w-xs">
-                                            {{ resolution.description }}
-
-                                            <div class="mt-2 text-blue-500">
-                                                Author: {{ resolution.author }}
+                        <div style="overflow-y: auto; max-height: 600px;">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="sm-hide px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                            <div class="flex items-center">
+                                                Resolution #
+                                                <i data-feather="chevron-down" class="w-4 h-4 ml-1" v-if="sortColumn === 'resolutionNumber' && sortDirection === 'asc'"></i>
+                                                <i data-feather="chevron-up" class="w-4 h-4 ml-1" v-if="sortColumn === 'resolutionNumber' && sortDirection === 'desc'"></i>
                                             </div>
-
-                                            <div class="sm-show mt-3">
-                                                {{ resolution.summary }}
+                                        </th>
+                                        <th class="sm-hide px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                            <div class="flex items-center">
+                                                Date
+                                                <i data-feather="chevron-down" class="w-4 h-4 ml-1" v-if="sortColumn === 'passageDate' && sortDirection === 'asc'"></i>
+                                                <i data-feather="chevron-up" class="w-4 h-4 ml-1" v-if="sortColumn === 'passageDate' && sortDirection === 'desc'"></i>
                                             </div>
-                                            <div class="sm-show mt-3">
-                                                <b>{{ resolution.resolutionNumber }}</b>
+                                        </th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            <div class="sm-hide">
+                                                <div class="relative">
+                                                    <input v-model="searchQuery" type="text" placeholder="Search resolutions..." 
+                                                           class="px-4 py-2 border-2 border-solid border-blue-500 rounded-full w-64">
+                                                </div>
                                             </div>
-                                            <a :href="resolution.url" target="_blank" class="text-blue-600 hover:text-blue-900 sm-show mt-3">
-                                                {{ resolution.url }}
-                                            </a>
-                                        </td>
-                                        <td class="sm-hide px-6 py-4 text-sm text-gray-500 max-w-xs">
-                                            {{ resolution.summary }}
-                                        </td>
-                                        <td class="sm-hide px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" 
-                                                  :class="getCategoryColor(resolution.category)">
-                                                {{ resolution.category }}
-                                            </span>
-                                        </td>
-                                        <td class="sm-hide px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <!--<button @click="openModal(resolution)" class="text-indigo-600 hover:text-indigo-900 mr-3">
-                                                <i data-feather="eye" class="w-4 h-4"></i>
-                                            </button>-->
-                                            <a :href="resolution.url" target="_blank" class="text-blue-600 hover:text-blue-900">
-                                                {{ resolution.url }}
-                                            </a>
-                                        </td>
+                                            <span class="sm-show">Description</span>
+                                        </th>
+                                        <th class="sm-hide px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            <div class="relative">
+                                                Summary
+                                            </div>
+                                        </th>
+                                        <th class="sm-hide px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                            <div class="flex items-center">
+                                                Category
+                                                <i data-feather="chevron-down" class="w-4 h-4 ml-1" v-if="sortColumn === 'category' && sortDirection === 'asc'"></i>
+                                                <i data-feather="chevron-up" class="w-4 h-4 ml-1" v-if="sortColumn === 'category' && sortDirection === 'desc'"></i>
+                                            </div>
+                                        </th>
+                                        <th class="sm-hide px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            URL
+                                        </th>
                                     </tr>
-                                </transition-group>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <transition-group name="fade" tag="tbody">
+                                        <tr v-for="resolution in paginatedResolutions" :key="resolution.resolutionNumber" class="hover:bg-gray-50 clickable"  @click="openModal(resolution)">
+                                            <td class="sm-hide px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">
+                                                {{ resolution.resolutionNumber }}
+                                            </td>
+                                            <td class="sm-hide px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ formatDate(resolution.passageDate) }}
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-gray-500 max-w-xs">
+                                                {{ resolution.description }}
+
+                                                <div class="mt-2 text-blue-500">
+                                                    Author: {{ resolution.author }}
+                                                </div>
+
+                                                <div class="sm-show mt-3">
+                                                    {{ resolution.summary }}
+                                                </div>
+                                                <div class="sm-show mt-3">
+                                                    <b>{{ resolution.resolutionNumber }}</b>
+                                                </div>
+                                                <a :href="resolution.url" target="_blank" class="text-blue-600 hover:text-blue-900 sm-show mt-3">
+                                                    {{ resolution.url }}
+                                                </a>
+                                            </td>
+                                            <td class="sm-hide px-6 py-4 text-sm text-gray-500 max-w-xs">
+                                                {{ resolution.summary }}
+                                            </td>
+                                            <td class="sm-hide px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" 
+                                                      :class="getCategoryColor(resolution.category)">
+                                                    {{ resolution.category }}
+                                                </span>
+                                            </td>
+                                            <td class="sm-hide px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <!--<button @click="openModal(resolution)" class="text-indigo-600 hover:text-indigo-900 mr-3">
+                                                    <i data-feather="eye" class="w-4 h-4"></i>
+                                                </button>-->
+                                                <a :href="resolution.url" target="_blank" class="text-blue-600 hover:text-blue-900">
+                                                    {{ resolution.url }}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </transition-group>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
                         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
@@ -210,7 +221,8 @@
                     </div>
                 </div>
 
-                <div class="" style="height:350px">
+                <!-- charts -->
+                <div>
                     <div class="bg-white rounded-xl shadow-md mb-6 p-6">
                         <h2 class="text-lg font-medium mb-4">Resolutions by Category</h2>
                         <canvas id="categoryChart" style="margin-right: auto; margin-left:auto"></canvas>
@@ -219,15 +231,19 @@
                         <h2 class="text-lg font-medium mb-4">Resolutions Over Time</h2>
                         <canvas id="timelineChart"></canvas>
                     </div>
-                    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
-                        <h2 class="text-lg font-medium mb-4">Various Accomplishments</h2>
-                        <div style="overflow-y: auto; height:400px">
-                            <div v-for="acc in accomplishments" :key="acc.accomplishment" class="mb-5">
-                                {{ acc.accomplishment }}
+                </div>
 
-                                <a v-if="acc.url" :href="acc.url" class="text-blue-600 hover:text-blue-900">
-                                    {{ acc.url }}
-                                </a>
+                <div class="bg-white rounded-xl shadow-md p-6 mb-6 lg:col-span-4">
+                    <h2 class="text-lg font-medium mb-4">Various Accomplishments</h2>
+                    <div style="overflow-y: auto; max-height:400px">
+                        <div v-for="acc in accomplishments" :key="acc.accomplishment" class="mb-5">
+                            <div class="px-6 py-4 text-sm">
+                                {{ acc.accomplishment }}
+                                <div>
+                                    <a v-if="acc.url" :href="acc.url" class="text-blue-600 hover:text-blue-900">
+                                        {{ acc.url }}
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2372,7 +2388,7 @@
                 
                 // Pagination
                 const currentPage = ref(1);
-                const itemsPerPage = 5;
+                const itemsPerPage = 200;
                 
                 // Modal state
                 const selectedResolution = ref(null);
